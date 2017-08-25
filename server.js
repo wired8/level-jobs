@@ -159,7 +159,6 @@ function flush(q) {
         q._needsDrain = true;
         q._concurrency --;
         q._pending.del(key, deletedPending);
-        run(q, key, JSON.parse(work), ranAgain);
       });
 
       function ranAgain(err) {
