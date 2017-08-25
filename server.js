@@ -158,7 +158,10 @@ function flush(q) {
         q.emit('error', new Error('max retries reached, removing failed job!'));
         q._needsDrain = true;
         q._concurrency --;
-        q._pending.del(key, deletedPending);
+        q._work.del(key, function(err, result) {
+          console.log('Deleted job : key', key, err,result)
+          q._pending.del(key, deletedPending);
+        }); 
       });
 
       function ranAgain(err) {
