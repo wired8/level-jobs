@@ -155,9 +155,11 @@ function flush(q) {
       });
 
       errorBackoff.once('fail', function() {
-        q.emit('error', new Error('max retries reached'));
-        console.log('Removing failed job');
+        q.emit('error', new Error('max retries reached, removing failed job!'));
+        q._needsDrain = true;
+        q._concurrency --;
         q._pending.del(key, deletedPending);
+        run(q, key, JSON.parse(work), ranAgain);
       });
 
       function ranAgain(err) {
