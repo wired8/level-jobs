@@ -156,6 +156,8 @@ function flush(q) {
 
       errorBackoff.once('fail', function() {
         q.emit('error', new Error('max retries reached'));
+        console.log('Removing failed job');
+        q._pending.del(key, deletedPending);
       });
 
       function ranAgain(err) {
